@@ -1,2 +1,2 @@
-# Hand-Gesture-Recognition-Python
-Hand Gesture Recognition using python
+# Hand_Gesture_Recognition
+This Project is about recognising number of fingers showing in front of live feed camera.Using Hand HaarCascade XML which is used to identify Palm. 
