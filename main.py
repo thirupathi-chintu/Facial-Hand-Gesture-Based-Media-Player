@@ -124,7 +124,7 @@ def check_command(c, exe):
         return "VOLUME CONTROL DOWN"
     elif c == 4:
         if CHANGE_VOLUME and exe:
-            vol_down()
+            vol_up()
         return "VOLUME CONTROL UP"
     return None
 
