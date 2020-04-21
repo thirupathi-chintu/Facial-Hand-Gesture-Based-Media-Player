@@ -117,20 +117,20 @@ def check_command(c, exe):
         return "NOACTION"
     elif c == 1:
         if REALLY_NOT_DEBUG and exe:
-            move_next()
-        return "NEXT"
+           vol_up() 
+        return "VOLUME UP"
     elif c == 2:
         if REALLY_NOT_DEBUG and exe:
-            move_prev()
-        return "PREVIOUS"
-    elif c == 3:
-        if CHANGE_VOLUME and exe:
-            vol_down()
+           vol_down() 
         return "VOLUME DOWN"
+    elif c == 3:
+        if REALLY_NOT_DEBUG and exe:
+           move_prev()
+        return "PREVIOUS"
     elif c == 4:
-        if CHANGE_VOLUME and exe:
-            vol_up()
-        return "VOLUME UP"
+        if REALLY_NOT_DEBUG and exe:
+           move_next()
+        return "NEXT"
     return None
 
 

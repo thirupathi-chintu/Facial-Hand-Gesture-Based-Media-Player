@@ -20,8 +20,8 @@ def move_prev():
 
 
 def vol_up():
-    check_call(['vlc-ctrl', 'volume', '+0.1'])
+    check_call(['vlc-ctrl', 'volume', '+0.2'])
 
 
 def vol_down():
-    check_call(['vlc-ctrl', 'volume', '-0.1'])
+    check_call(['vlc-ctrl', 'volume', '-0.2'])
