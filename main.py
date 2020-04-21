@@ -1,12 +1,12 @@
 import math
-from tkinter import font as tkFont
+import tkFont
 import numpy as np
 import cv2  # required 3+
-import tkinter as tk
+import Tkinter as tk
 from threading import Thread
-import queue as Queue
+import Queue as Queue
 import time
-import os 	
+import os
 
 from commands import *
 
@@ -61,15 +61,18 @@ def main_tk_thread():
     # set font for labels
     font = tkFont.Font(family="Arial", size=18, weight=tkFont.BOLD)
     # create buttons, labels
-    tc = tk.Button(text='enable commands', name='ec', command=toggle_commands, width='15')
+    tc = tk.Button(text='enable commands', name='ec',
+                   command=toggle_commands, width='15')
     tc.place(x=20, y=210)
-    b = tk.Button(text='debug mode', name='dbg', command=debug_toggle, width='15')
+    b = tk.Button(text='debug mode', name='dbg',
+                  command=debug_toggle, width='15')
     b.place(x=20, y=260)
     hull = tk.Label(t, name="hull", text="None", font=font)
     hull.place(x=20, y=10)
     defects = tk.Label(t, name="defects", text="None", font=font)
     defects.place(x=20, y=60)
-    defects_filtered = tk.Label(t, name="defects_filtered", text="None", font=font)
+    defects_filtered = tk.Label(
+        t, name="defects_filtered", text="None", font=font)
     defects_filtered.place(x=20, y=110)
     command = tk.Label(t, name="command", text="None", font=font)
     command.place(x=20, y=160)
@@ -93,7 +96,8 @@ def defects_label(a):
 
 
 def defects_filtered_label(a):
-    t.children["defects_filtered"].configure(text=str("Defects filtered = %s" % a))
+    t.children["defects_filtered"].configure(
+        text=str("Defects filtered = %s" % a))
 
 
 def command_label(a):
@@ -102,6 +106,7 @@ def command_label(a):
 
 def en_command_label(a):
     t.children["en_command"].configure(text=str("(%s)" % a))
+
 
 def en_dbg_label(a):
     t.children["en_dbg"].configure(text=str("(%s)" % a))
@@ -121,19 +126,18 @@ def check_command(c, exe):
     elif c == 3:
         if CHANGE_VOLUME and exe:
             vol_down()
-        return "VOLUME CONTROL DOWN"
+        return "VOLUME DOWN"
     elif c == 4:
         if CHANGE_VOLUME and exe:
             vol_up()
-        return "VOLUME CONTROL UP"
+        return "VOLUME UP"
     return None
 
-            
 
 if __name__ == '__main__':
     t = Thread(target=main_tk_thread)
     t.start()
-     
+
     # Flag is used to pause and play the video [ if flag is 1 then the video plays else it doesn't ]
     Pauseflag = 0
 
@@ -150,7 +154,7 @@ if __name__ == '__main__':
         # convert image to gray scale
         gray = cv2.cvtColor(crop_img, cv2.COLOR_BGR2GRAY)
         gray1 = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        #face identification
+        # face identification
         faces = face_cascade.detectMultiScale(gray1, 1.3, 5)
         if debug:
             cv2.imshow('Gray scale', gray)
@@ -159,13 +163,15 @@ if __name__ == '__main__':
         if debug:
             cv2.imshow('Blurred', blur)
         # apply threshold to get black and white (binary) image (ROI)
-        _, thresh1 = cv2.threshold(blur, 127, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+        _, thresh1 = cv2.threshold(
+            blur, 127, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
         if debug:
             cv2.imshow('Threshold', thresh1)
 
         # 2. Analyze ROI
         # find contours
-        contours, hierarchy = cv2.findContours(thresh1, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        contours, hierarchy = cv2.findContours(
+            thresh1, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         # contours, hierarchy = cv2.findContours(thresh1.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
 
         # get max contour area
@@ -236,22 +242,21 @@ if __name__ == '__main__':
         to_next = COOLDOWN - delta
         if to_next < 0:
             to_next = 0
-       
+
         if REALLY_NOT_DEBUG and exe:
             for (x, y, w, h) in faces:
-		 play()
-		 Pauseflag = 1 # Face is detected hence play the video continuesly
-	    if Pauseflag == 0: 
-		 pause()
-	    Pauseflag = 0 
-          
-        
+                play()
+                Pauseflag = 1  # Face is detected hence play the video continuesly
+            if Pauseflag == 0:
+                pause()
+            Pauseflag = 0
+
         # submit some data to GUI
         submit_to_tkinter(hull_label, str(hull.shape[0]))
         submit_to_tkinter(defects_label, str(defects.shape[0]))
         submit_to_tkinter(defects_filtered_label, str(count_defects))
-        submit_to_tkinter(en_command_label, str("%s, cooldown %.2fs." % (enable_commands, to_next)))
+        submit_to_tkinter(en_command_label, str(
+            "%s, cooldown %.2fs." % (enable_commands, to_next)))
         submit_to_tkinter(en_dbg_label, debug)
         if com:
             submit_to_tkinter(command_label, com)
-        
